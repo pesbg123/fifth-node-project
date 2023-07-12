@@ -10,6 +10,7 @@ const { Posts, Likes, Users } = require('../models');
 router.get('/like', authMiddleware, async (req, res) => {
   try {
     const { userId } = res.locals.user;
+
     // 로그인한 해당 사용자가 좋아요 관계를 가져옵니다.
     const likes = await Likes.findAll({
       where: { UserId: userId },
