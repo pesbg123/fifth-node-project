@@ -161,4 +161,4 @@ class AuthService {
   }
 }
 
-module.exports = AuthService;
+module.exports = AuthService; // AuthService 모듈을 외부로 내보냅니다.
