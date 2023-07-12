@@ -13,4 +13,4 @@ router.post('/login', authController.login.bind(authController));
 // 로그아웃 API
 router.post('/logout', authController.logout.bind(authController));
 
-module.exports = router; // router 모듈을 외부로 내보냅니다.
+module.exports = router; // router  모듈을 외부로 내보냅니다.
