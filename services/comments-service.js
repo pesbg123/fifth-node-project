@@ -52,5 +52,35 @@ class CommentsService {
     );
     return createComment;
   }
+
+  //   ----------------------------------------------------------------
+
+  async editComment(userId, postId, content, commentId) {
+    // 게시글의 존재 여부를 확인합니다.
+    const targetPost = await this.postsRepository.getOnePost(postId);
+    if (!targetPost) {
+      throw new Error('게시글을 찾을 수 없습니다.');
+    }
+    // 코멘트의 존재 여부를 확인합니다.
+    const targetComment = await this.commentsRepository.getOneComment(
+      commentId
+    );
+    if (!targetComment) {
+      throw new Error('코멘트를 찾을 수 없습니다.');
+    }
+    // 사용자 본인이 작성한 코멘트인지 검사합니다.
+    if (userId !== targetComment.dataValues.UserId) {
+      throw new Error('본인이 작성한 댓글만 수정할 수 있습니다.');
+    }
+    // 입력된 코멘트 값의 유효성을 검사합니다.
+    if (!content) {
+      throw new Error('코멘트를 입력해주세요.');
+    }
+    const editComment = await this.commentsRepository.editComment(
+      commentId,
+      content
+    );
+    return editComment;
+  }
 }
 module.exports = CommentsService;
