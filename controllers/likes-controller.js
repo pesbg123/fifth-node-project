@@ -36,12 +36,8 @@ class LikesController {
       let statusCode;
       // 에러코드 핸들링
       // 아래 에러들이 아닐시 statusCode는 500으로 적용
-      if (error.message === '해당 사용자가 존재하지 않습니다.') {
+      if (error.message === '좋아요를 등록한 게시글이 존재하지 않습니다.') {
         statusCode = 404;
-      } else if (error.message === '닉네임이나 비밀번호가 일치하지 않습니다.') {
-        statusCode = 400;
-      } else if (error.message === '이미 로그인 상태입니다.') {
-        statusCode = 400;
       } else {
         statusCode = 500;
       }
