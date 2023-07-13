@@ -4,8 +4,6 @@ const authMiddleware = require('../middlewares/auth-middleware.js');
 const PostsController = require('../controllers/posts-controller.js');
 const postsController = new PostsController();
 
-const { Posts } = require('../models');
-
 // 전체 게시글 조회 API
 router.get('/posts', postsController.getPosts.bind(postsController));
 
