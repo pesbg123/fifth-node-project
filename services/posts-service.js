@@ -38,6 +38,10 @@ class PostsService {
     );
     return modifiedPosts;
   }
+
+  //   ----------------------------------------------------------------
+
+  async createPost(title, content) {}
 }
 
 module.exports = PostsService;
