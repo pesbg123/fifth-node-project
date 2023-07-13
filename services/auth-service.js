@@ -6,7 +6,6 @@ const saltRounds = 10;
 
 const AuthRepository = require('../repositories/auth-repository'); // auth-repository를 가져옵니다.
 // AuthService 클래스를 생성합니다.
-
 class AuthService {
   // 클래스가 인스턴스화 될때 초깃값을 설정합니다.
   constructor() {
@@ -15,7 +14,7 @@ class AuthService {
 
   async signup(nickname, password, confirmPassword) {
     if (!nickname || !password || !confirmPassword) {
-      throw new Error('닉네임 또는 패스워드를 입력해주세요');
+      throw new Error('닉네임 또는 패스워드를 입력해주세요.');
     }
     // 정규 표현식을 사용해서 닉네임이 영어와 숫자로 이루어 졌는지 검사 합니다.
     if (!nickname.match(/^[a-zA-Z0-9]{3,50}$/)) {
@@ -103,7 +102,7 @@ class AuthService {
 
     if (!refreshToken) {
       // refreshToken이 없는 경우 로그인 완료 응답을 반환합니다.
-      return res.status(200).json(loginResponse);
+      return loginResponse;
     }
 
     let tokenExpiredError = false;

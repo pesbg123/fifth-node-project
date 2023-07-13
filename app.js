@@ -15,6 +15,11 @@ app.use(cookieParser()); // 쿠키 파싱
 // 라우터들을 가져옵니다.
 app.use('/api', [usersRouter, postRouter, commentRouter, likeRouter]);
 
+// 404에러 캐치 미들웰어
+app.use((req, res, next) => {
+  res.status(404).send('잘못된 api요청 경로입니다.');
+});
+
 // 전역 에러 캐치 미들웨어
 app.use((error, req, res, next) => {
   // status 코드와 에러 메세지를 포함하여 응답합니다.
