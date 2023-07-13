@@ -12,5 +12,14 @@ class CommentsRepository {
 
     return getAllComments;
   }
+
+  async createCommnet(postId, content, userId) {
+    await Comments.create({
+      UserId: userId,
+      PostId: postId,
+      content,
+    });
+    return { message: '댓글을 생성했습니다.' };
+  }
 }
 module.exports = CommentsRepository;
