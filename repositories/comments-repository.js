@@ -40,5 +40,17 @@ class CommentsRepository {
     await Comments.update({ content }, { where: { commentId } });
     return { message: '댓글을 수정했습니다.' };
   }
+
+  async delComment(commentId, userId) {
+    await Comments.destroy({
+      where: {
+        [Op.and]: [
+          { commentId }, // commentId를 기준으로 삭제할 댓글을 지정합니다.
+          { UserId: userId }, // userId를 기준으로 삭제할 댓글을 지정합니다.
+        ],
+      },
+    });
+    return { message: '댓글을 삭제했습니다.' };
+  }
 }
 module.exports = CommentsRepository;
