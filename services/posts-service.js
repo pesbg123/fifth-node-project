@@ -24,7 +24,7 @@ class PostsService {
       // 완료될 때까지 기다리고 그 반환값을 반환합니다.
       getAllPosts.map(async (post) => {
         const postId = post.postId;
-        const postLikes = await Likes.count({ where: { PostId: postId } });
+        const postLikes = await this.postsRepository.likesCount(postId);
         // modifiedLikes 변수로 반환됩니다.
         return {
           postId: post.postId,
@@ -32,16 +32,62 @@ class PostsService {
           title: post.title,
           createdAt: post.createdAt,
           updatedAt: post.updatedAt,
-          postLikes: postLikes,
+          postLikes,
         };
       })
     );
     return modifiedPosts;
   }
 
+  // ----------------------------------------------------------------
+
+  async getOnePost(postId) {
+    const post = await this.postsRepository.getOnePost(postId);
+    if (!post) {
+      // 게시글이 존재하지 않을 경우
+      throw new Error('해당 게시글이 존재하지 않습니다.');
+    }
+    // 게시글이 존재한다면 응답 데이터 형식 변경
+    const postLikes = await this.postsRepository.likesCount(postId);
+    const modifiedPost = {
+      postId: post.postId,
+      nickname: post.User.nickname,
+      title: post.title,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+      postLikes,
+    };
+
+    return modifiedPost;
+  }
+
   //   ----------------------------------------------------------------
 
-  async createPost(title, content) {}
+  async createPost(title, content, userId) {
+    // body에서 받아온 데이터가 존재하지 않을 경우
+    if (!title || !content) {
+      throw new Error('제목이나 본문을 입력해주세요.');
+    }
+    const post = await this.postsRepository.createPost(title, content, userId);
+    return post;
+  }
+
+  // ----------------------------------------------------------------
+
+  async editPost(title, content, userId, postId) {
+    const post = await this.postsRepository.getOnePost(postId);
+
+    // 본인이 작성한 게시글인지 확인합니다.
+    if (post.dataValues.UserId !== userId) {
+      throw new Error('본인이 작성한 게시글만 수정할 수 있습니다.');
+    }
+    const editPost = await this.postsRepository.editPost(
+      title,
+      content,
+      postId
+    );
+    return editPost;
+  }
 }
 
 module.exports = PostsService;
