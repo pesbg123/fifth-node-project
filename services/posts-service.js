@@ -1,6 +1,3 @@
-const { Op } = require('sequelize');
-const { Posts, Users, Likes } = require('../models');
-
 const PostsRepository = require('../repositories/posts-repository');
 // PostsService 클래스를 생성합니다.
 class PostsService {
@@ -75,10 +72,13 @@ class PostsService {
   // ----------------------------------------------------------------
 
   async editPost(title, content, userId, postId) {
-    const post = await this.postsRepository.getOnePost(postId);
-
+    const targetPost = await this.postsRepository.getOnePost(postId);
+    // 해당 게시글이 존재하지 않을 경우
+    if (!targetPost) {
+      throw new Error('해당 게시글이 존재하지 않습니다.');
+    }
     // 본인이 작성한 게시글인지 확인합니다.
-    if (post.dataValues.UserId !== userId) {
+    if (targetPost.dataValues.UserId !== userId) {
       throw new Error('본인이 작성한 게시글만 수정할 수 있습니다.');
     }
     const editPost = await this.postsRepository.editPost(
@@ -87,6 +87,22 @@ class PostsService {
       postId
     );
     return editPost;
+  }
+
+  // ----------------------------------------------------------------
+
+  async delPost(postId, userId) {
+    const targetPost = await this.postsRepository.getOnePost(postId);
+    // 해당 게시글이 존재하지 않을 경우
+    if (!targetPost) {
+      throw new Error('해당 게시글이 존재하지 않습니다.');
+    }
+    // 본인이 작성한 게시글이 아닐 경우
+    if (targetPost.UserId !== userId) {
+      throw new Error('본인이 작성한 게시글만 삭제할 수 있습니다.');
+    }
+    const delpost = await this.postsRepository.delPost(postId, userId);
+    return delpost;
   }
 }
 

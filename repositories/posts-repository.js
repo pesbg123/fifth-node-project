@@ -1,4 +1,5 @@
 const { Posts, Users, Likes } = require('../models');
+const { Op } = require('sequelize');
 
 class PostsRepository {
   //
@@ -38,7 +39,7 @@ class PostsRepository {
   // --------------------------------------------------------
 
   async createPost(title, content, userId) {
-    const post = await Posts.create({
+    await Posts.create({
       UserId: userId,
       title,
       content,
@@ -46,11 +47,24 @@ class PostsRepository {
     return { message: '게시물 등록에 성공했습니다.' };
   }
 
+  // --------------------------------------------------------------------------------
+
   async editPost(title, content, postId) {
+    console.log(postId);
+
     // 수정사항을 업데이트 합니다.
     if (title) Posts.update({ title }, { where: { postId } });
     if (content) Posts.update({ content }, { where: { postId } });
     return { message: '게시글 수정에 성공했습니다.' };
+  }
+
+  async delPost(postId, userId) {
+    await Posts.destroy({
+      where: {
+        [Op.and]: [{ postId }, { UserId: userId }],
+      },
+    });
+    return { message: '게시물 삭제에 성공했습니다.' };
   }
 }
 

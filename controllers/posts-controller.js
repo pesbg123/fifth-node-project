@@ -98,7 +98,44 @@ class PostsController {
       let statusCode;
       // 에러코드 핸들링
       // 아래 에러들이 아닐시 statusCode는 500으로 적용
-      if (error.message === '본인이 작성한 게시글만 수정할 수 있습니다.') {
+      if (error.message === '해당 게시글이 존재하지 않습니다.') {
+        statusCode = 404;
+      } else if (
+        error.message === '본인이 작성한 게시글만 수정할 수 있습니다.'
+      ) {
+        statusCode = 403;
+      } else {
+        statusCode = 500;
+      }
+      // 에러 메세지 객체
+      const errorResponse = {
+        errorMessage: error.message,
+        errorCode: statusCode,
+      };
+      next(errorResponse); // 에러 객체를 다음 미들웨어로 전달합니다.
+    }
+  }
+
+  // ----------------------------------------------------------------
+
+  async delPost(req, res, next) {
+    try {
+      const { postId } = req.params;
+      const { userId } = res.locals.user;
+
+      const targetPost = await this.postsService.delPost(postId, userId);
+
+      // 확인 메시지를 응답합니다.
+      return res.status(202).json({ message: targetPost.message });
+    } catch (error) {
+      let statusCode;
+      // 에러코드 핸들링
+      // 아래 에러들이 아닐시 statusCode는 500으로 적용
+      if (error.message === '해당 게시글이 존재하지 않습니다.') {
+        statusCode = 404;
+      } else if (
+        error.message === '본인이 작성한 게시글만 삭제할 수 있습니다.'
+      ) {
         statusCode = 403;
       } else {
         statusCode = 500;
