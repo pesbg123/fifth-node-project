@@ -50,8 +50,6 @@ class PostsRepository {
   // --------------------------------------------------------------------------------
 
   async editPost(title, content, postId) {
-    console.log(postId);
-
     // 수정사항을 업데이트 합니다.
     if (title) Posts.update({ title }, { where: { postId } });
     if (content) Posts.update({ content }, { where: { postId } });

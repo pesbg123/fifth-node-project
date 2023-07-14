@@ -82,8 +82,6 @@ class CommentsController {
       );
       res.status(200).json({ message: targetComment.message });
     } catch (error) {
-      console.log(error);
-
       let statusCode;
       // 에러코드 핸들링
       // 아래 에러들이 아닐시 statusCode는 500으로 적용
@@ -120,8 +118,6 @@ class CommentsController {
       );
       res.status(200).json({ message: targetComment.message });
     } catch (error) {
-      console.log(error);
-
       let statusCode;
       // 에러코드 핸들링
       // 아래 에러들이 아닐시 statusCode는 500으로 적용

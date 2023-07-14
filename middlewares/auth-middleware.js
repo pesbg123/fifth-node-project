@@ -23,7 +23,6 @@ module.exports = async (req, res, next) => {
     res.locals.user = thisUser; // 조회된 사용자 정보를 응답 로컬 변수에 저장합니다.
     next(); // 다음 미들웨어로 넘어갑니다.
   } catch (err) {
-    console.error(err);
     res.status(401).send({
       errorMessage: '로그인 후 이용 가능한 기능입니다.', // 에러 메시지를 응답으로 보내고, 상태 코드 401(Unauthorized)를 설정합니다.
     });
