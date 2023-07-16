@@ -16,7 +16,6 @@ class AuthController {
         confirmPassword
       );
       res.status(202).json({
-        userId: newUser.userId,
         message: newUser.message,
       });
     } catch (error) {
