@@ -17,7 +17,7 @@ class AuthController {
       );
       res.status(202).json({
         userId: newUser.userId,
-        message: '회원가입에 성공했습니다.',
+        message: newUser.message,
       });
     } catch (error) {
       let statusCode;
