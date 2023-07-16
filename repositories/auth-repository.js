@@ -16,11 +16,11 @@ class AuthRepository {
 
   async createUser(nickname, EncryptionPW) {
     // DB에 유저를 저장합니다.
-    const newUser = await Users.create({
+    await Users.create({
       password: EncryptionPW,
       nickname,
     });
-    return newUser;
+    return { message: '회원가입에 성공했습니다.' };
   }
 }
 
